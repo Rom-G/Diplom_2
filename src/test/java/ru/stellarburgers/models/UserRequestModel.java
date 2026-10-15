@@ -7,13 +7,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserModel {
+public class UserRequestModel {
 
     private String email;
     private String password;
     private String name;
 
-    public UserModel(String email, String password) {
+    public UserRequestModel(String email, String password) {
         this.email = email;
         this.password = password;
     }
