@@ -12,4 +12,7 @@ public class UserData {
     public final static String USER_REGISTER_PATH = "/api/auth/register";
     public final static String USER_LOGIN_PATH = "/api/auth/login";
     public final static String USER_PATH = "/api/auth/user";
+
+
+    public final static String USER_ALREADY_EXISTS = "User already exists";
 }
