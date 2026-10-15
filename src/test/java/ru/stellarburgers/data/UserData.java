@@ -10,4 +10,5 @@ public class UserData {
     public final static String NAME = user.name().firstName();
 
     public final static String USER_REGISTER_PATH = "/api/auth/register";
+    public final static String USER_LOGIN_PATH = "/api/auth/login";
 }
