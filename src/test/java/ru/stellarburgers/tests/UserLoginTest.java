@@ -6,6 +6,8 @@ import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.Description;
 import ru.stellarburgers.models.*;
 
+import static org.apache.http.HttpStatus.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static ru.stellarburgers.data.UserData.*;
 import static ru.stellarburgers.steps.UserSteps.*;
@@ -30,8 +32,28 @@ public class UserLoginTest {
     @DisplayName("Check impossible of logging in with invalid login")
     @Description("The test checks the handling of incorrect requests")
     public void loginWithInvalidLoginFailsTest() {
-        UserAuthedModel userAuthed = loginUser(EMAIL, PASSWORD).as(UserAuthedModel.class);
+        loginUser(EMAIL, PASSWORD)
+                .then()
+                .log().all()
+                .statusCode(SC_UNAUTHORIZED)
+                .body("success", equalTo(false))
+                .and()
+                .body("message", equalTo(USER_INCORRECT_FIELDS));
+    }
 
+    @Test
+    @DisplayName("Check impossible of logging in with invalid password")
+    @Description("The test checks the handling of incorrect requests")
+    public void loginWithInvalidPasswordFailsTest() {
+        registerUser(EMAIL, PASSWORD, NAME);
+
+        loginUser(EMAIL, "WrongPass!")
+                .then()
+                .log().all()
+                .statusCode(SC_UNAUTHORIZED)
+                .body("success", equalTo(false))
+                .and()
+                .body("message", equalTo(USER_INCORRECT_FIELDS));
     }
 
     @After
