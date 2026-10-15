@@ -13,8 +13,8 @@ public class UserModel {
     private String password;
     private String name;
 
-    public UserModel(String email, String name) {
+    public UserModel(String email, String password) {
         this.email = email;
-        this.name = name;
+        this.password = password;
     }
 }
