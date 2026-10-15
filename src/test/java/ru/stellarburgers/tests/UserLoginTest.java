@@ -16,8 +16,7 @@ public class UserLoginTest {
     @DisplayName("Check if the user can log in")
     @Description("Basic test for /api/auth/login endpoint")
     public void loginUserSuccessTest() {
-        UserRequestModel user = new UserRequestModel(EMAIL, PASSWORD, NAME);
-        registerUser(user);
+        registerUser(EMAIL, PASSWORD, NAME);
         UserAuthedModel userAuthed = loginUser(EMAIL, PASSWORD).as(UserAuthedModel.class);
 
         assertTrue("The success field is not true", userAuthed.isSuccess());

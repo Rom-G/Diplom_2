@@ -13,7 +13,8 @@ import static ru.stellarburgers.data.UserData.*;
 public class UserSteps {
 
     @Step("Send POST request to /api/auth/register")
-    public static Response registerUser(UserRequestModel user) {
+    public static Response registerUser(String email, String password, String name) {
+        UserRequestModel user = new UserRequestModel(email, password, name);
         return given()
                 .spec(ApiClient.requestSpec())
                 .body(user)

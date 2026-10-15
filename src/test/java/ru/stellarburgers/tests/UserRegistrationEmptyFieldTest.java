@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import ru.stellarburgers.models.UserAuthedModel;
-import ru.stellarburgers.models.UserRequestModel;
 
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.hamcrest.Matchers.equalTo;
@@ -40,8 +39,7 @@ public class UserRegistrationEmptyFieldTest {
     @DisplayName("Check a user cannot be registered with an empty required field")
     @Description("The test verifies that it is impossible to create invalid users")
     public void registerUserWithEmptyFieldFailsTest() {
-        UserRequestModel user = new UserRequestModel(email, password, name);
-        registerUser(user)
+        registerUser(email, password, name)
                 .then()
                 .log().all()
                 .statusCode(SC_FORBIDDEN)
