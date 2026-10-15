@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SuccessfulRegistrationModel {
+public class UserRegisteredModel {
 
     private boolean success;
     private UserModel user;
