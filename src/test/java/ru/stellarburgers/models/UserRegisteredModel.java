@@ -8,7 +8,7 @@ import lombok.Setter;
 public class UserRegisteredModel {
 
     private boolean success;
-    private UserModel user;
+    private UserEmailName user;
     private String accessToken;
     private String refreshToken;
 }
