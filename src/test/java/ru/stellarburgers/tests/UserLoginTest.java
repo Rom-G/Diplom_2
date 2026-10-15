@@ -1,6 +1,7 @@
 package ru.stellarburgers.tests;
 
 import org.junit.Test;
+import org.junit.After;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.Description;
 import ru.stellarburgers.models.*;
@@ -17,12 +18,29 @@ public class UserLoginTest {
     public void loginUserSuccessTest() {
         UserRequestModel user = new UserRequestModel(EMAIL, PASSWORD, NAME);
         registerUser(user);
-        UserAuthedModel userAuthed = loginUser().as(UserAuthedModel.class);
+        UserAuthedModel userAuthed = loginUser(EMAIL, PASSWORD).as(UserAuthedModel.class);
 
         assertTrue("The success field is not true", userAuthed.isSuccess());
         assertNotNull("AccessToken is null", userAuthed.getAccessToken());
         assertNotNull("RefreshToken is null", userAuthed.getRefreshToken());
         assertEquals("The email in the response is different", EMAIL, userAuthed.getUser().getEmail());
         assertEquals("The name in the response is different", NAME, userAuthed.getUser().getName());
+    }
+
+    @Test
+    @DisplayName("Check impossible of logging in with invalid login")
+    @Description("The test checks the handling of incorrect requests")
+    public void loginWithInvalidLoginFailsTest() {
+        UserAuthedModel userAuthed = loginUser(EMAIL, PASSWORD).as(UserAuthedModel.class);
+
+    }
+
+    @After
+    public void tearDown() {
+        UserAuthedModel userAuthed = loginUser(EMAIL, PASSWORD).as(UserAuthedModel.class);
+
+        if (userAuthed.isSuccess()) {
+            deleteUser(userAuthed.getAccessToken());
+        }
     }
 }

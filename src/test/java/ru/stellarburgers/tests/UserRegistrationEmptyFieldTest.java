@@ -52,7 +52,7 @@ public class UserRegistrationEmptyFieldTest {
 
     @After
     public void tearDown() {
-        UserAuthedModel userAuthed = loginUser().as(UserAuthedModel.class);
+        UserAuthedModel userAuthed = loginUser(email, password).as(UserAuthedModel.class);
 
         if (userAuthed.isSuccess()) {
             deleteUser(userAuthed.getAccessToken());

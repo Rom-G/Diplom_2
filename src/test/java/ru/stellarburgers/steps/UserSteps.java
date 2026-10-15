@@ -22,8 +22,8 @@ public class UserSteps {
     }
 
     @Step("Send POST request to /api/auth/login")
-    public static Response loginUser() {
-        UserRequestModel user = new UserRequestModel(EMAIL, PASSWORD);
+    public static Response loginUser(String email, String password) {
+        UserRequestModel user = new UserRequestModel(email, password);
         return given()
                 .spec(ApiClient.requestSpec())
                 .body(user)
