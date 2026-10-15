@@ -15,4 +15,5 @@ public class UserData {
 
 
     public final static String USER_ALREADY_EXISTS = "User already exists";
+    public final static String USER_REQUIRED_FIELDS = "Email, password and name are required fields";
 }
