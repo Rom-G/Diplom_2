@@ -10,9 +10,20 @@ public class ApiClient {
 
     public static final String BASE_URL = "https://stellarburgers.education-services.ru";
 
-    public static RequestSpecification requestSpec() {
+    public static RequestSpecification baseRequestSpec() {
         return new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
+                .setContentType(ContentType.JSON)
+                .setConfig(RestAssured.config()
+                        .logConfig(LogConfig.logConfig()
+                                .enablePrettyPrinting(true)))
+                .build();
+    }
+
+    public static RequestSpecification authRequestSpec(String token) {
+        return new RequestSpecBuilder()
+                .setBaseUri(BASE_URL)
+                .addHeader("Authorization", token)
                 .setContentType(ContentType.JSON)
                 .setConfig(RestAssured.config()
                         .logConfig(LogConfig.logConfig()
