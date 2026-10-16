@@ -14,7 +14,7 @@ public class UserSteps {
     public static Response registerUser(String email, String password, String name) {
         UserRequestModel user = new UserRequestModel(email, password, name);
         return given()
-                .spec(ApiClient.baseRequestSpec())
+                .spec(ApiClient.getBaseSpec())
                 .body(user)
                 .when()
                 .post(USER_REGISTER_PATH);
@@ -24,7 +24,7 @@ public class UserSteps {
     public static Response loginUser(String email, String password) {
         UserRequestModel user = new UserRequestModel(email, password);
         return given()
-                .spec(ApiClient.baseRequestSpec())
+                .spec(ApiClient.getBaseSpec())
                 .body(user)
                 .when()
                 .post(USER_LOGIN_PATH);
@@ -33,7 +33,7 @@ public class UserSteps {
     @Step("Send DELETE request to /api/auth/user")
     public static void deleteUser(String accessToken) {
         given()
-                .spec(ApiClient.authRequestSpec(accessToken))
+                .spec(ApiClient.getAuthSpec(accessToken))
                 .when()
                 .post(USER_PATH);
     }
