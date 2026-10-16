@@ -1,7 +1,5 @@
 package ru.stellarburgers.steps;
 
-import java.util.Collections;
-
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.stellarburgers.models.UserRequestModel;
@@ -16,7 +14,7 @@ public class UserSteps {
     public static Response registerUser(String email, String password, String name) {
         UserRequestModel user = new UserRequestModel(email, password, name);
         return given()
-                .spec(ApiClient.requestSpec())
+                .spec(ApiClient.baseRequestSpec())
                 .body(user)
                 .when()
                 .post(USER_REGISTER_PATH);
@@ -26,7 +24,7 @@ public class UserSteps {
     public static Response loginUser(String email, String password) {
         UserRequestModel user = new UserRequestModel(email, password);
         return given()
-                .spec(ApiClient.requestSpec())
+                .spec(ApiClient.baseRequestSpec())
                 .body(user)
                 .when()
                 .post(USER_LOGIN_PATH);
@@ -35,8 +33,7 @@ public class UserSteps {
     @Step("Send DELETE request to /api/auth/user")
     public static void deleteUser(String accessToken) {
         given()
-                .spec(ApiClient.requestSpec())
-                .body(Collections.singletonMap("authorization", accessToken))
+                .spec(ApiClient.authRequestSpec(accessToken))
                 .when()
                 .post(USER_PATH);
     }
