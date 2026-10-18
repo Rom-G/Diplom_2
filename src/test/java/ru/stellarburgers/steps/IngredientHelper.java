@@ -8,7 +8,7 @@ import ru.stellarburgers.models.Ingredient;
 import ru.stellarburgers.models.IngredientsListModel;
 
 import static io.restassured.RestAssured.*;
-import static ru.stellarburgers.data.OrderData.INGREDIENTS_PATH;
+import static ru.stellarburgers.data.OrderData.INGREDIENTS_GET_PATH;
 
 public class IngredientHelper {
 
@@ -18,7 +18,7 @@ public class IngredientHelper {
         if (cachedIngredients == null) {
             Response response = given()
                     .spec(ApiClient.getBaseSpec())
-                    .get(INGREDIENTS_PATH);
+                    .get(INGREDIENTS_GET_PATH);
 
             IngredientsListModel ingredientsListModel = response.as(IngredientsListModel.class);
             cachedIngredients = ingredientsListModel.getData();
