@@ -27,7 +27,7 @@ public class IngredientHelper {
         return cachedIngredients;
     }
 
-    public static List<Ingredient> getRandomIngredients(int count, long seed) {
+    public static List<String> getRandom_idsIngredients(int count, long seed) {
         List<Ingredient> list = getCachedIngredients();
 
         if (list.isEmpty()) {
@@ -38,12 +38,12 @@ public class IngredientHelper {
         }
 
         Random random = new Random(seed);
-        List<Ingredient> result = new ArrayList<>();
+        List<String> result = new ArrayList<>();
         List<Ingredient> shuffled = new ArrayList<>(list);
         Collections.shuffle(shuffled, random);
 
         for (int i = 0; i < count; i++) {
-            result.add(shuffled.get(i));
+            result.add(shuffled.get(i).get_id());
         }
 
         return result;
