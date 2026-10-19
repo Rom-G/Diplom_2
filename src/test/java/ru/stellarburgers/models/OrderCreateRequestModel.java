@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class OrderRequestModel {
+public class OrderCreateRequestModel {
 
     private List<String> ingredients;
 }
