@@ -1,5 +1,6 @@
 package ru.stellarburgers.tests;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -7,14 +8,16 @@ import org.junit.Before;
 import org.junit.Test;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.Description;
-import io.restassured.response.Response;
 import ru.stellarburgers.models.OrderCreateResponseModel;
 import ru.stellarburgers.models.UserAuthedModel;
 
+import static org.apache.http.HttpStatus.*;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static ru.stellarburgers.steps.IngredientHelper.*;
 import static ru.stellarburgers.steps.OrderSteps.createOrder;
 import static ru.stellarburgers.steps.UserSteps.*;
+import static ru.stellarburgers.data.OrderData.*;
 import static ru.stellarburgers.data.UserData.*;
 
 public class OrderTest {
@@ -35,7 +38,7 @@ public class OrderTest {
     @Test
     @DisplayName("Check the creation of an order with authorization with ingredients")
     @Description("Basic test for /api/orders endpoint")
-    public void createOrderWithAuthAndIngredients() {
+    public void createOrderWithAuthAndIngredientsSuccessTest() {
         OrderCreateResponseModel response = createOrder(ingredients, accessToken).as(OrderCreateResponseModel.class);
         List<String> actual_idsIngredients = getResponse_idsIngredients(response.getOrder().getIngredients());
 
@@ -53,6 +56,18 @@ public class OrderTest {
         assertEquals("The email is different", EMAIL, response.getOrder().getOwner().getEmail());
         assertTrue("The order number is zero", response.getOrder().getNumber() > 0);
         assertTrue("The price of the order is zero", response.getOrder().getPrice() > 0.009999f);
+    }
+
+    @Test
+    @DisplayName("Check the order can't be created without ingredients.")
+    @Description("The test verifies the processing of incorrect orders")
+    public void createOrderWithAuthWithoutIngredientsFailsTest() {
+        createOrder(new ArrayList<>(), accessToken)
+                .then()
+                .log().all()
+                .statusCode(SC_BAD_REQUEST)
+                .body("success", is(false))
+                .body("message", equalTo(ORDER_IDS_REQUIRED));
     }
 
     @After
