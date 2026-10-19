@@ -37,8 +37,7 @@ public class UserRegistrationTest {
                 .then()
                 .log().all()
                 .statusCode(SC_FORBIDDEN)
-                .body("success", equalTo(false))
-                .and()
+                .body("success", is(false))
                 .body("message", equalTo(USER_ALREADY_EXISTS));
     }
 
