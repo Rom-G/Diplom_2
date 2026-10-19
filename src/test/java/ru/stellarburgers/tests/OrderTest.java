@@ -59,7 +59,21 @@ public class OrderTest {
     }
 
     @Test
-    @DisplayName("Check the order can't be created without ingredients.")
+    @DisplayName("Check that the order can be created without authorization")
+    @Description("the test checks the ability to place an order before authorization")
+    public void createOrderWithoutAuthWithIngredientsSuccessTest() {
+        createOrder(ingredients, null)
+                .then()
+                .log().all()
+                .body("success", is(true))
+                .body("name", notNullValue())
+                .body("order.number", greaterThan(0))
+                .body("order.ingredients", equalTo(null))
+                .body("order.owner", equalTo(null));
+    }
+
+    @Test
+    @DisplayName("Check the order can't be created without ingredients")
     @Description("The test verifies the processing of incorrect orders")
     public void createOrderWithAuthWithoutIngredientsFailsTest() {
         createOrder(new ArrayList<>(), accessToken)
@@ -68,6 +82,17 @@ public class OrderTest {
                 .statusCode(SC_BAD_REQUEST)
                 .body("success", is(false))
                 .body("message", equalTo(ORDER_IDS_REQUIRED));
+    }
+
+    @Test
+    @DisplayName("Check the order can't be created with invalid id of ingredient")
+    @Description("The test verifies the processing of incorrect orders")
+    public void createOrderWithAuthAndInvalidIngredientFailsTest() {
+        List<String> invalidIngredients = new ArrayList<>(List.of(INVALID_ID1, INVALID_ID2));
+        createOrder(invalidIngredients, accessToken)
+                .then()
+                .log().all()
+                .statusCode(SC_INTERNAL_SERVER_ERROR);
     }
 
     @After
