@@ -5,7 +5,7 @@ import java.util.*;
 import io.restassured.response.Response;
 import ru.stellarburgers.client.ApiClient;
 import ru.stellarburgers.models.Ingredient;
-import ru.stellarburgers.models.IngredientsListModel;
+import ru.stellarburgers.models.IngredientsResponseModel;
 
 import static io.restassured.RestAssured.*;
 import static ru.stellarburgers.data.OrderData.INGREDIENTS_GET_PATH;
@@ -20,8 +20,8 @@ public class IngredientHelper {
                     .spec(ApiClient.getBaseSpec())
                     .get(INGREDIENTS_GET_PATH);
 
-            IngredientsListModel ingredientsListModel = response.as(IngredientsListModel.class);
-            cachedIngredients = ingredientsListModel.getData();
+            IngredientsResponseModel ingredientsResponseModel = response.as(IngredientsResponseModel.class);
+            cachedIngredients = ingredientsResponseModel.getData();
         }
 
         return cachedIngredients;

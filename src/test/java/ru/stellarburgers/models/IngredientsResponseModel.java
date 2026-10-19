@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class IngredientsListModel {
+public class IngredientsResponseModel {
 
     private boolean success;
     private List<Ingredient> data;

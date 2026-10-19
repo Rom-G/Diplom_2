@@ -11,7 +11,4 @@ public class Ingredient {
     private String name;
     private String type;
     private float price;
-    private String image;
-    private String image_mobile;
-    private String image_large;
 }
