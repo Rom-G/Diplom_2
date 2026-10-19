@@ -2,6 +2,7 @@ package ru.stellarburgers.steps;
 
 import java.util.*;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.stellarburgers.client.ApiClient;
 import ru.stellarburgers.models.Ingredient;
@@ -14,6 +15,7 @@ public class IngredientHelper {
 
     private static List<Ingredient> cachedIngredients = null;
 
+    @Step("Send GET request to /api/ingredients")
     public static List<Ingredient> getCachedIngredients() {
         if (cachedIngredients == null) {
             Response response = given()
@@ -27,6 +29,7 @@ public class IngredientHelper {
         return cachedIngredients;
     }
 
+    @Step("Get the _id of random ingredients by quantity")
     public static List<String> getRandom_idsIngredients(int count, long seed) {
         List<Ingredient> list = getCachedIngredients();
 
@@ -44,6 +47,17 @@ public class IngredientHelper {
 
         for (int i = 0; i < count; i++) {
             result.add(shuffled.get(i).get_id());
+        }
+
+        return result;
+    }
+
+    @Step("Get the _id of ingredients from response")
+    public static List<String> getResponse_idsIngredients(List<Ingredient> ingredients) {
+        List<String> result = new ArrayList<>();
+
+        for (Ingredient ing : ingredients) {
+            result.add(ing.get_id());
         }
 
         return result;
