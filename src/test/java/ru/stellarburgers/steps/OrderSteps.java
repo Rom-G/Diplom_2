@@ -20,6 +20,7 @@ public class OrderSteps {
                 ApiClient.getAuthSpec(accessToken);
 
         return given()
+                .log().all()
                 .spec(requestSpec)
                 .body(new OrderCreateRequestModel(_idsIngredients))
                 .when()
