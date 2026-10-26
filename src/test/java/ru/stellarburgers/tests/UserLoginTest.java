@@ -1,5 +1,6 @@
 package ru.stellarburgers.tests;
 
+import io.restassured.response.Response;
 import org.junit.Test;
 import org.junit.After;
 import io.qameta.allure.junit4.DisplayName;
@@ -19,8 +20,10 @@ public class UserLoginTest {
     @Description("Basic test for /api/auth/login endpoint")
     public void loginUserSuccessTest() {
         registerUser(EMAIL, PASSWORD, NAME);
-        UserAuthedModel userAuthed = loginUser(EMAIL, PASSWORD).as(UserAuthedModel.class);
+        Response response = loginUser(EMAIL, PASSWORD);
+        UserAuthedModel userAuthed = response.as(UserAuthedModel.class);
 
+        response.then().log().all().statusCode(SC_OK);
         assertTrue("The success field is not true", userAuthed.isSuccess());
         assertNotNull("AccessToken is null", userAuthed.getAccessToken());
         assertNotNull("RefreshToken is null", userAuthed.getRefreshToken());
