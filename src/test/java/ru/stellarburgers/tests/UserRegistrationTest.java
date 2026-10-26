@@ -1,5 +1,6 @@
 package ru.stellarburgers.tests;
 
+import io.restassured.response.Response;
 import org.junit.Test;
 import org.junit.After;
 import io.qameta.allure.junit4.DisplayName;
@@ -19,8 +20,10 @@ public class UserRegistrationTest {
     @DisplayName("Check a user can be registered")
     @Description("Basic test for /api/auth/register endpoint")
     public void registerUserSuccessTest() {
-        UserRegisteredModel userRegistered = registerUser(EMAIL, PASSWORD, NAME).as(UserRegisteredModel.class);
+        Response response = registerUser(EMAIL, PASSWORD, NAME);
+        UserRegisteredModel userRegistered = response.as(UserRegisteredModel.class);
 
+        response.then().log().all().statusCode(SC_CREATED);
         assertTrue("The success field is not true", userRegistered.isSuccess());
         assertEquals("The email in the response is different", EMAIL, userRegistered.getUser().getEmail());
         assertEquals("The name in the response is different", NAME, userRegistered.getUser().getName());
