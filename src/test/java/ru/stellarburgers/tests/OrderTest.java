@@ -59,17 +59,15 @@ public class OrderTest {
     }
 
     @Test
-    @DisplayName("Check that the order can be created without authorization")
-    @Description("the test checks the ability to place an order before authorization")
-    public void createOrderWithoutAuthWithIngredientsSuccessTest() {
+    @DisplayName("Check that the order can't be created without authorization")
+    @Description("the test checks the not ability to place an order before authorization")
+    public void createOrderWithoutAuthWithIngredientsFailsTest() {
         createOrder(ingredients, null)
                 .then()
                 .log().all()
-                .body("success", is(true))
-                .body("name", notNullValue())
-                .body("order.number", greaterThan(0))
-                .body("order.ingredients", equalTo(null))
-                .body("order.owner", equalTo(null));
+                .statusCode(SC_UNAUTHORIZED)
+                .body("success", is(false))
+                .body("message", notNullValue());
     }
 
     @Test
