@@ -3,6 +3,7 @@ package ru.stellarburgers.tests;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,23 +40,25 @@ public class OrderTest {
     @DisplayName("Check the creation of an order with authorization with ingredients")
     @Description("Basic test for /api/orders endpoint")
     public void createOrderWithAuthAndIngredientsSuccessTest() {
-        OrderCreateResponseModel response = createOrder(ingredients, accessToken).as(OrderCreateResponseModel.class);
-        List<String> actual_idsIngredients = getResponse_idsIngredients(response.getOrder().getIngredients());
+        Response response = createOrder(ingredients, accessToken);
+        OrderCreateResponseModel responseModel = response.as(OrderCreateResponseModel.class);
+        List<String> actual_idsIngredients = getResponse_idsIngredients(responseModel.getOrder().getIngredients());
 
-        assertTrue("Success is not true", response.isSuccess());
-        assertNotNull("The name of the burger is null", response.getName());
+        response.then().log().all().statusCode(SC_CREATED);
+        assertTrue("Success is not true", responseModel.isSuccess());
+        assertNotNull("The name of the burger is null", responseModel.getName());
         assertEquals("The number of ingredients is not the same as expected",
-                ingredients.size(), response.getOrder().getIngredients().size());
+                ingredients.size(), responseModel.getOrder().getIngredients().size());
 
         for (String ing : ingredients) {
             assertTrue("There is no " + ing + " in the ingredients list",
                     actual_idsIngredients.contains(ing));
         }
 
-        assertEquals("The user's name is different", NAME, response.getOrder().getOwner().getName());
-        assertEquals("The email is different", EMAIL, response.getOrder().getOwner().getEmail());
-        assertTrue("The order number is zero", response.getOrder().getNumber() > 0);
-        assertTrue("The price of the order is zero", response.getOrder().getPrice() > 0.009999f);
+        assertEquals("The user's name is different", NAME, responseModel.getOrder().getOwner().getName());
+        assertEquals("The email is different", EMAIL, responseModel.getOrder().getOwner().getEmail());
+        assertTrue("The order number is zero", responseModel.getOrder().getNumber() > 0);
+        assertTrue("The price of the order is zero", responseModel.getOrder().getPrice() > 0.009999f);
     }
 
     @Test
