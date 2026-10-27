@@ -89,7 +89,10 @@ public class OrderTest {
     @DisplayName("Check the order can't be created with invalid id of ingredient")
     @Description("The test verifies the processing of incorrect orders")
     public void createOrderWithAuthAndInvalidIngredientFailsTest() {
-        List<String> invalidIngredients = new ArrayList<>(List.of(INVALID_ID1, INVALID_ID2));
+        List<String> invalidIngredients = new ArrayList<>(
+                List.of(INVALID_INGREDIENT_HASH_RANDOM,
+                        INVALID_INGREDIENT_HASH_RANDOM_ALT));
+
         createOrder(invalidIngredients, accessToken)
                 .then()
                 .log().all()
