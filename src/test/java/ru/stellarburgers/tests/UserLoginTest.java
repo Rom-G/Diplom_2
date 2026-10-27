@@ -1,6 +1,7 @@
 package ru.stellarburgers.tests;
 
 import io.restassured.response.Response;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 import io.qameta.allure.junit4.DisplayName;
@@ -15,11 +16,15 @@ import static ru.stellarburgers.steps.UserSteps.*;
 
 public class UserLoginTest {
 
+    @Before
+    public void setUp() {
+        registerUser(EMAIL, PASSWORD, NAME);
+    }
+
     @Test
     @DisplayName("Check if the user can log in")
     @Description("Basic test for /api/auth/login endpoint")
     public void loginUserSuccessTest() {
-        registerUser(EMAIL, PASSWORD, NAME);
         Response response = loginUser(EMAIL, PASSWORD);
         UserAuthedModel userAuthed = response.as(UserAuthedModel.class);
 
@@ -35,7 +40,7 @@ public class UserLoginTest {
     @DisplayName("Check impossible of logging in with invalid login")
     @Description("The test checks the handling of incorrect requests")
     public void loginWithInvalidLoginFailsTest() {
-        loginUser(EMAIL, PASSWORD)
+        loginUser(EMAIL_UNREGISTERED, PASSWORD)
                 .then()
                 .log().all()
                 .statusCode(SC_UNAUTHORIZED)
@@ -48,8 +53,6 @@ public class UserLoginTest {
     @DisplayName("Check impossible of logging in with invalid password")
     @Description("The test checks the handling of incorrect requests")
     public void loginWithInvalidPasswordFailsTest() {
-        registerUser(EMAIL, PASSWORD, NAME);
-
         loginUser(EMAIL, "WrongPass!")
                 .then()
                 .log().all()
